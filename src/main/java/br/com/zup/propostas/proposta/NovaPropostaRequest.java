@@ -29,6 +29,10 @@ public class NovaPropostaRequest {
         this.endereco = endereco;
     }
 
+    public String getDocumento() {
+        return documento;
+    }
+
     public Proposta toModel(){
         return new Proposta(nome, email, documento, salario, endereco);
     }

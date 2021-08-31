@@ -2,10 +2,7 @@ package br.com.zup.propostas.proposta;
 
 import br.com.zup.propostas.validacao.CPFOrCNPJ;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -28,6 +25,8 @@ public class Proposta {
     private BigDecimal salario;
     @NotBlank
     private String endereco;
+    @Enumerated(EnumType.STRING)
+    private StatusProposta status = StatusProposta.NAO_ELEGIVEL;
 
     @Deprecated
     public Proposta() {
@@ -63,5 +62,15 @@ public class Proposta {
 
     public String getEndereco() {
         return endereco;
+    }
+
+    public void atualizaStatus(StatusProposta status) {
+        if (status == null)
+            throw new IllegalArgumentException("Status não pode ser nulo");
+        this.status = status;
+    }
+
+    public StatusProposta getStatus() {
+        return status;
     }
 }
