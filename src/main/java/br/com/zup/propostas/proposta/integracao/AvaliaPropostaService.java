@@ -1,5 +1,6 @@
-package br.com.zup.propostas.proposta;
+package br.com.zup.propostas.proposta.integracao;
 
+import br.com.zup.propostas.proposta.Proposta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;

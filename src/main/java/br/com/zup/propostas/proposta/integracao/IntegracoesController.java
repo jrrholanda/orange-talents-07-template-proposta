@@ -1,5 +1,6 @@
-package br.com.zup.propostas.proposta;
+package br.com.zup.propostas.proposta.integracao;
 
+import br.com.zup.propostas.proposta.integracao.SolicitacaoAnaliseRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

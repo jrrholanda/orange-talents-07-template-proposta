@@ -1,4 +1,7 @@
-package br.com.zup.propostas.proposta;
+package br.com.zup.propostas.proposta.integracao;
+
+import br.com.zup.propostas.proposta.StatusProposta;
+import br.com.zup.propostas.proposta.integracao.SolicitacaoAnaliseRequest;
 
 public class ResultadoAnaliseResponse {
 

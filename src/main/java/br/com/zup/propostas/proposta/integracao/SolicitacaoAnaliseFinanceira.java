@@ -1,4 +1,4 @@
-package br.com.zup.propostas.proposta;
+package br.com.zup.propostas.proposta.integracao;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
