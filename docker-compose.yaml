@@ -22,6 +22,22 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
 
+  proposta-webservice:
+    build:
+      dockerfile: proposta.dockerfile
+      context: .
+    image: jrrholanda/proposta
+    container_name: proposta
+    ports:
+      - 8081:8080
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres-proposta:5432/postgres
+      DATABASE_USERNAME: keycloak
+      DATABASE_PASSWORD: password
+    depends_on:
+      - postgres
+
+
   postgres:
     image: 'postgres:9.6-alpine'
     volumes:
