@@ -1,5 +1,6 @@
 package br.com.zup.propostas.proposta;
 
+import br.com.zup.propostas.cartao.Cartao;
 import br.com.zup.propostas.validacao.CPFOrCNPJ;
 
 import javax.persistence.*;
@@ -27,6 +28,9 @@ public class Proposta {
     private String endereco;
     @Enumerated(EnumType.STRING)
     private StatusProposta status = StatusProposta.NAO_ELEGIVEL;
+
+    @OneToOne(mappedBy = "proposta", cascade = CascadeType.MERGE)
+    private Cartao cartao;
 
     @Deprecated
     public Proposta() {
@@ -64,13 +68,21 @@ public class Proposta {
         return endereco;
     }
 
+    public StatusProposta getStatus() {
+        return status;
+    }
+
     public void atualizaStatus(StatusProposta status) {
         if (status == null)
             throw new IllegalArgumentException("Status não pode ser nulo");
         this.status = status;
     }
 
-    public StatusProposta getStatus() {
-        return status;
+    public void adicionarCartao(Cartao novoCartao){
+        if(novoCartao == null){
+            throw new IllegalArgumentException("Não é possível adicionar um cartão nulo a proposta");
+        }
+        this.cartao = novoCartao;
+        this.atualizaStatus(StatusProposta.ELEGIVEL_COM_CARTAO);
     }
 }
