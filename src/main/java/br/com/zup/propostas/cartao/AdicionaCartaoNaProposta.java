@@ -15,9 +15,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
-
-//@EnableScheduling
-//@EnableAsync
 @Component
 public class AdicionaCartaoNaProposta {
 
@@ -41,18 +38,18 @@ public class AdicionaCartaoNaProposta {
 
         logger.info("verificando propostas elegíveis que não possuem cartões atrelados");
 
-                List<Proposta> propostasElegiveis = propostaRepository.findByStatus(StatusProposta.ELEGIVEL);
+        List<Proposta> propostasElegiveis = propostaRepository.findByStatus(StatusProposta.ELEGIVEL);
 
-                propostasElegiveis.forEach(proposta -> {
-                    CartaoRequest cartaoRequest = new CartaoRequest(proposta);
-                    CartaoResponse cartaoResponse = cartaoClient.buscaCartao(cartaoRequest);
+        propostasElegiveis.forEach(proposta -> {
+            CartaoRequest cartaoRequest = new CartaoRequest(proposta);
+            CartaoResponse cartaoResponse = cartaoClient.buscaCartao(cartaoRequest);
 
-                    Cartao novoCartao = cartaoResponse.toModel(proposta);
-                    cartaoRepository.save(novoCartao);
+            Cartao novoCartao = cartaoResponse.toModel(proposta);
+            cartaoRepository.save(novoCartao);
 
-                    proposta.adicionarCartao(novoCartao);
-                    propostaRepository.save(proposta);
+            proposta.adicionarCartao(novoCartao);
+            propostaRepository.save(proposta);
 
-                });
+        });
     }
 }
