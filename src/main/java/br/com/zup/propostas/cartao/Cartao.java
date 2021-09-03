@@ -4,6 +4,8 @@ import br.com.zup.propostas.proposta.Proposta;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Cartao {
@@ -19,6 +21,9 @@ public class Cartao {
     private String numeroCartao;
 
     private String titular;
+
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    private Set<Biometria> biometrias = new HashSet<>();
 
     @Deprecated
     public Cartao() {
@@ -44,5 +49,9 @@ public class Cartao {
 
     public String getTitular() {
         return titular;
+    }
+
+    public void adicionarBiometria(Biometria biometria){
+        this.biometrias.add(biometria);
     }
 }
