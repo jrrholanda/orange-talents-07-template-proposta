@@ -22,8 +22,13 @@ public class Cartao {
 
     private String titular;
 
-    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
     private Set<Biometria> biometrias = new HashSet<>();
+
+    private StatusCartao status = StatusCartao.ATIVO;
+
+    @OneToMany(mappedBy = "cartao")
+    private Set<BloqueioCartao> listaBloqueios = new HashSet<>();
 
     @Deprecated
     public Cartao() {
@@ -51,7 +56,28 @@ public class Cartao {
         return titular;
     }
 
+    public Set<Biometria> getBiometrias() {
+        return biometrias;
+    }
+
+    public StatusCartao getStatus() {
+        return status;
+    }
+
+    public Set<BloqueioCartao> getListaBloqueios() {
+        return listaBloqueios;
+    }
+
     public void adicionarBiometria(Biometria biometria){
         this.biometrias.add(biometria);
+    }
+
+    public void bloquearCartao(String ipCliente, String userAgent){
+        this.listaBloqueios.add(new BloqueioCartao(this, userAgent, ipCliente));
+        this.status = StatusCartao.BLOQUEADO;
+    }
+
+    public boolean cartaoBloqueado(){
+        return this.status.equals(StatusCartao.BLOQUEADO);
     }
 }
