@@ -25,6 +25,7 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
     private Set<Biometria> biometrias = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
     private StatusCartao status = StatusCartao.ATIVO;
 
     @OneToMany(mappedBy = "cartao")

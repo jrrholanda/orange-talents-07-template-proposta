@@ -8,4 +8,7 @@ public interface CartaoClient {
 
     @RequestMapping(method = RequestMethod.POST, path ="/cartoes")
     CartaoResponse buscaCartao(CartaoRequest cartaoRequest);
+
+    @RequestMapping(method = RequestMethod.POST, path ="/cartoes/{numeroCartao}/bloqueios")
+    BloqueioCartaoResponse bloqueiaCartao(@PathVariable("numeroCartao") String nummeroCartao, @RequestBody BloqueioCartaoRequest bloqueioRequest);
 }
