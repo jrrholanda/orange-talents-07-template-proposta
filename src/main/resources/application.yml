@@ -44,3 +44,13 @@ management:
   health:
     db:
       enable: true
+  endpoints:
+    web:
+      exposure:
+        include: info,health,prometheus
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      aplicacao: ${NOME_DA_APLICACAO:serviço de proposta}
+      ambiente: ${AMBIENTE:desenvolvimento}
