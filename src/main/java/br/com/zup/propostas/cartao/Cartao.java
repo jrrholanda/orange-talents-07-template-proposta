@@ -1,5 +1,6 @@
 package br.com.zup.propostas.cartao;
 
+import br.com.zup.propostas.notificacaoviagem.NotificacaoViagem;
 import br.com.zup.propostas.proposta.Proposta;
 
 import javax.persistence.*;
@@ -25,11 +26,14 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
     private Set<Biometria> biometrias = new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated//(EnumType.STRING)
     private StatusCartao status = StatusCartao.ATIVO;
 
     @OneToMany(mappedBy = "cartao")
     private Set<BloqueioCartao> listaBloqueios = new HashSet<>();
+
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
+    private Set<NotificacaoViagem> notificacoes = new HashSet<>();
 
     @Deprecated
     public Cartao() {
@@ -80,5 +84,9 @@ public class Cartao {
 
     public boolean cartaoBloqueado(){
         return this.status.equals(StatusCartao.BLOQUEADO);
+    }
+
+    public void adcionaNotificacoes(NotificacaoViagem notificacaoViagem) {
+        this.notificacoes.add(notificacaoViagem);
     }
 }

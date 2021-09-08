@@ -2,11 +2,11 @@ package br.com.zup.propostas.notificacaoviagem;
 
 import br.com.zup.propostas.cartao.Cartao;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.http.HttpHeaders;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,7 +19,7 @@ public class NotificacaoViagem {
     private String destino;
 
     @NotNull
-    private LocalDateTime dataRetorno;
+    private LocalDate dataRetorno;
 
     @ManyToOne
     private Cartao cartao;
@@ -37,7 +37,7 @@ public class NotificacaoViagem {
     public NotificacaoViagem() {
     }
 
-    public NotificacaoViagem(String destino, LocalDateTime dataRetorno, Cartao cartao, String ipCliente, String userAgent) {
+    public NotificacaoViagem(String destino, LocalDate dataRetorno, Cartao cartao, String ipCliente, String userAgent) {
         this.destino = destino;
         this.dataRetorno = dataRetorno;
         this.cartao = cartao;

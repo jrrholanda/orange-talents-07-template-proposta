@@ -2,6 +2,9 @@ package br.com.zup.propostas.notificacaoviagem;
 
 import br.com.zup.propostas.cartao.Cartao;
 import br.com.zup.propostas.cartao.CartaoRepository;
+import br.com.zup.propostas.cartao.integracao.CartaoClient;
+import br.com.zup.propostas.notificacaoviagem.integracao.AvisoViagemRequest;
+import br.com.zup.propostas.notificacaoviagem.integracao.AvisoViagemResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,8 +25,12 @@ public class NotificacaoViagemController {
     @Autowired
     private NotificacaoViagemRepository notificacaoViagemRepository;
 
-    @PostMapping("/{id}/notifica")
-    public ResponseEntity<?> noficaViagem(@PathVariable("id") long id, @RequestBody @Valid NotificacaoViagemRequest notificaRequest, @RequestHeader HttpHeaders headers, HttpServletRequest httpRequest){
+    @Autowired
+    private CartaoClient cartaoClient;
+
+    @PostMapping("/{id}/avisos")
+    public ResponseEntity<?> noficaViagem(@PathVariable("id") long id, @RequestBody @Valid NotificacaoViagemRequest notificaRequest,
+                                          @RequestHeader HttpHeaders headers, HttpServletRequest httpRequest){
 
         Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado"));
@@ -31,9 +38,16 @@ public class NotificacaoViagemController {
         String ipCliente = httpRequest.getRemoteAddr();
         String userAgent = headers.get(HttpHeaders.USER_AGENT).get(0);
 
-        NotificacaoViagem notificacaoViagem = notificaRequest.toModel(ipCliente, userAgent, cartao);
-        notificacaoViagemRepository.save(notificacaoViagem);
+        AvisoViagemRequest avisoViagemRequest = new AvisoViagemRequest(notificaRequest.getDestino(), notificaRequest.getDataRetorno());
+        AvisoViagemResponse avisoViagemResponse = cartaoClient.notificacaoViagem(cartao.getNumeroCartao(), avisoViagemRequest);
 
-        return ResponseEntity.ok().build();
+        if(avisoViagemResponse.getResultado().equals("CRIADO")){
+            NotificacaoViagem notificacaoViagem = notificaRequest.toModel(ipCliente, userAgent, cartao);
+            cartao.adcionaNotificacoes(notificacaoViagem);
+            notificacaoViagemRepository.save(notificacaoViagem);
+            return ResponseEntity.ok().build();
+        }
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Houve um erro ao notificar o sistema bancário");
     }
 }
