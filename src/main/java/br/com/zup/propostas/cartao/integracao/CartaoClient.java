@@ -1,5 +1,7 @@
 package br.com.zup.propostas.cartao.integracao;
 
+import br.com.zup.propostas.carteira.InclusaoCarteiraRequest;
+import br.com.zup.propostas.carteira.InclusaoCarteiraResponse;
 import br.com.zup.propostas.notificacaoviagem.integracao.AvisoViagemRequest;
 import br.com.zup.propostas.notificacaoviagem.integracao.AvisoViagemResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,4 +18,7 @@ public interface CartaoClient {
 
     @RequestMapping(method = RequestMethod.POST, path ="/cartoes/{numeroCartao}/avisos")
     AvisoViagemResponse notificacaoViagem(@PathVariable("numeroCartao") String numeroCartao, @RequestBody AvisoViagemRequest avisoViagemRequest);
+
+    @RequestMapping(method = RequestMethod.POST, path ="/cartoes/{numeroCartao}/carteiras")
+    InclusaoCarteiraResponse associaCarteira(@PathVariable("numeroCartao") String numeroCartao, @RequestBody InclusaoCarteiraRequest carteiraRequest);
 }

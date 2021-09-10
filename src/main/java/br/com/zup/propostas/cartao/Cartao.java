@@ -1,11 +1,14 @@
 package br.com.zup.propostas.cartao;
 
+import br.com.zup.propostas.carteira.CarteiraDigital;
 import br.com.zup.propostas.notificacaoviagem.NotificacaoViagem;
 import br.com.zup.propostas.proposta.Proposta;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -34,6 +37,9 @@ public class Cartao {
 
     @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
     private Set<NotificacaoViagem> notificacoes = new HashSet<>();
+
+    @OneToMany(mappedBy = "cartao", cascade = CascadeType.PERSIST)
+    private Set<CarteiraDigital> carteiras = new HashSet<>();
 
     @Deprecated
     public Cartao() {
@@ -88,5 +94,26 @@ public class Cartao {
 
     public void adcionaNotificacoes(NotificacaoViagem notificacaoViagem) {
         this.notificacoes.add(notificacaoViagem);
+    }
+
+    public boolean verificaCarteira(CarteiraDigital carteiraDigital){
+        return carteiras.stream().map(CarteiraDigital::getCarteira).equals(carteiraDigital.getCarteira());
+    }
+
+    public void adcionaCarteira(CarteiraDigital carteiraDigital){
+        carteiras.add(carteiraDigital);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cartao)) return false;
+        Cartao cartao = (Cartao) o;
+        return Objects.equals(carteiras, cartao.carteiras);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(carteiras);
     }
 }
