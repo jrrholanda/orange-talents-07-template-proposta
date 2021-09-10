@@ -31,7 +31,7 @@ public class InclusaoCarteiraRequest {
     private CarteiraEnum toCarteira(){
         if(carteira.toUpperCase().equals("PAYPAL"))
             return CarteiraEnum.PAYPAL;
-        return CarteiraEnum.TESTE;
+        return CarteiraEnum.SAMSUNG_PAY;
     }
 
     public CarteiraDigital toModel(Cartao cartao){

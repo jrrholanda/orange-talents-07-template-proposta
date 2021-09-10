@@ -44,7 +44,7 @@ public class CarteiraController {
             carteiraRepository.save(carteira);
             cartao.adcionaCarteira(carteira);
             cartaoRepository.save(cartao);
-            URI link = uriComponentsBuilder.path("/api/propostas/{id}").buildAndExpand(carteira.getId()).toUri();
+            URI link = uriComponentsBuilder.path("/api/cartoes/{idCartao}/carteiras/{id}").buildAndExpand(cartao.getId(), carteira.getId()).toUri();
             return ResponseEntity.created(link).build();
         }
 
