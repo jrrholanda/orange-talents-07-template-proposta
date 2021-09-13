@@ -1,6 +1,7 @@
 package br.com.zup.propostas.proposta;
 
 import br.com.zup.propostas.cartao.Cartao;
+import br.com.zup.propostas.utils.Criptografia;
 import br.com.zup.propostas.validacao.CPFOrCNPJ;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Proposta {
     private String nome;
     @NotBlank @Email
     private String email;
-    @NotBlank @CPFOrCNPJ
+    @NotBlank @CPFOrCNPJ @Convert(converter = Criptografia.class)
     private String documento;
     @NotNull
     @Positive
